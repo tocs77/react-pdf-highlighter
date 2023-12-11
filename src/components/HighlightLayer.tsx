@@ -1,13 +1,6 @@
-import { viewportToScaled } from "../lib/coordinates";
-import React from "react";
-import {
-  IHighlight,
-  LTWH,
-  LTWHP,
-  Position,
-  Scaled,
-  ScaledPosition,
-} from "../types";
+import { viewportToScaled } from '../lib/coordinates';
+import React from 'react';
+import { IHighlight, LTWH, LTWHP, Position, Scaled, ScaledPosition } from '../types';
 
 interface HighlightLayerProps<T_HT> {
   highlightsByPage: { [pageNumber: string]: Array<T_HT> };
@@ -20,7 +13,7 @@ interface HighlightLayerProps<T_HT> {
     hideTip: () => void,
     viewportToScaled: (rect: LTWHP) => Scaled,
     screenshot: (position: LTWH) => string,
-    isScrolledTo: boolean
+    isScrolledTo: boolean,
   ) => JSX.Element;
   tip: {
     highlight: any;
@@ -76,14 +69,12 @@ export function HighlightLayer<T_HT extends IHighlight>({
           },
           hideTipAndSelection,
           (rect) => {
-            const viewport = viewer.getPageView(
-              (rect.pageNumber || parseInt(pageNumber)) - 1
-            ).viewport;
+            const viewport = viewer.getPageView((rect.pageNumber || parseInt(pageNumber)) - 1).viewport;
 
             return viewportToScaled(rect, viewport);
           },
           (boundingRect) => screenshot(boundingRect, parseInt(pageNumber)),
-          isScrolledTo
+          isScrolledTo,
         );
       })}
     </div>

@@ -4,17 +4,14 @@
 // for clarity reasons I decided not to store actual (0, 1) coordinates, but
 // provide width and height, so user can compute ratio himself if needed
 
-import type { LTWHP, Scaled, Viewport } from "../types";
+import type { LTWHP, Scaled, Viewport } from '../types';
 
 interface WIDTH_HEIGHT {
   width: number;
   height: number;
 }
 
-export const viewportToScaled = (
-  rect: LTWHP,
-  { width, height }: WIDTH_HEIGHT
-): Scaled => {
+export const viewportToScaled = (rect: LTWHP, { width, height }: WIDTH_HEIGHT): Scaled => {
   return {
     x1: rect.left,
     y1: rect.top,
@@ -30,12 +27,7 @@ export const viewportToScaled = (
 };
 
 const pdfToViewport = (pdf: Scaled, viewport: Viewport): LTWHP => {
-  const [x1, y1, x2, y2] = viewport.convertToViewportRectangle([
-    pdf.x1,
-    pdf.y1,
-    pdf.x2,
-    pdf.y2,
-  ]);
+  const [x1, y1, x2, y2] = viewport.convertToViewportRectangle([pdf.x1, pdf.y1, pdf.x2, pdf.y2]);
 
   return {
     left: Math.min(x1, x2),
@@ -48,11 +40,7 @@ const pdfToViewport = (pdf: Scaled, viewport: Viewport): LTWHP => {
   };
 };
 
-export const scaledToViewport = (
-  scaled: Scaled,
-  viewport: Viewport,
-  usePdfCoordinates: boolean = false
-): LTWHP => {
+export const scaledToViewport = (scaled: Scaled, viewport: Viewport, usePdfCoordinates = false): LTWHP => {
   const { width, height } = viewport;
 
   if (usePdfCoordinates) {
@@ -60,7 +48,7 @@ export const scaledToViewport = (
   }
 
   if (scaled.x1 === undefined) {
-    throw new Error("You are using old position format, please update");
+    throw new Error('You are using old position format, please update');
   }
 
   const x1 = (width * scaled.x1) / scaled.width;

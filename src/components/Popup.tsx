@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import MouseMonitor from "./MouseMonitor";
+import MouseMonitor from './MouseMonitor';
 
 interface Props {
   onMouseOver: (content: JSX.Element) => void;
@@ -36,15 +36,14 @@ export class Popup extends Component<Props, State> {
                 onMouseOut();
               }}
               paddingX={60}
-              paddingY={30}
-              children={popupContent}
-            />
+              paddingY={30}>
+              {popupContent}
+            </MouseMonitor>,
           );
         }}
         onMouseOut={() => {
           this.setState({ mouseIn: false });
-        }}
-      >
+        }}>
         {this.props.children}
       </div>
     );

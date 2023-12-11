@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import type { LTWHP } from "../types";
+import type { LTWHP } from '../types';
 
 interface State {
   height: number;
@@ -14,8 +14,7 @@ interface Props {
   pageBoundingRect: LTWHP;
 }
 
-const clamp = (value: number, left: number, right: number) =>
-  Math.min(Math.max(value, left), right);
+const clamp = (value: number, left: number, right: number) => Math.min(Math.max(value, left), right);
 
 class TipContainer extends Component<Props, State> {
   state: State = {
@@ -59,11 +58,7 @@ class TipContainer extends Component<Props, State> {
 
     const top = shouldMove ? style.bottom + 5 : style.top - height - 5;
 
-    const left = clamp(
-      style.left - width / 2,
-      0,
-      pageBoundingRect.width - width
-    );
+    const left = clamp(style.left - width / 2, 0, pageBoundingRect.width - width);
 
     const childrenWithProps = React.Children.map(children, (child) =>
       // @ts-ignore
@@ -76,27 +71,26 @@ class TipContainer extends Component<Props, State> {
             },
             () => {
               setTimeout(this.updatePosition, 0);
-            }
+            },
           );
         },
         popup: {
-          position: shouldMove ? "below" : "above",
+          position: shouldMove ? 'below' : 'above',
         },
-      })
+      }),
     );
 
     return (
       <div
-        className="PdfHighlighter__tip-container"
+        className='PdfHighlighter__tip-container'
         style={{
-          visibility: isStyleCalculationInProgress ? "hidden" : "visible",
+          visibility: isStyleCalculationInProgress ? 'hidden' : 'visible',
           top,
           left,
         }}
         ref={(node) => {
           this.node = node;
-        }}
-      >
+        }}>
         {childrenWithProps}
       </div>
     );

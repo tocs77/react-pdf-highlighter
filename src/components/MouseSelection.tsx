@@ -1,9 +1,9 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { asElement, isHTMLElement } from "../lib/pdfjs-dom";
-import "../style/MouseSelection.css";
+import { asElement, isHTMLElement } from '../lib/pdfjs-dom';
+import '../style/MouseSelection.css';
 
-import type { LTWH } from "../types.js";
+import type { LTWH } from '../types.js';
 
 interface Coords {
   x: number;
@@ -17,11 +17,7 @@ interface State {
 }
 
 interface Props {
-  onSelection: (
-    startTarget: HTMLElement,
-    boundingRect: LTWH,
-    resetSelection: () => void
-  ) => void;
+  onSelection: (startTarget: HTMLElement, boundingRect: LTWH, resetSelection: () => void) => void;
   onDragStart: () => void;
   onDragEnd: () => void;
   shouldStart: (event: MouseEvent) => boolean;
@@ -68,6 +64,7 @@ class MouseSelection extends Component<Props, State> {
       return;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     const that = this;
 
     const { onSelection, onDragStart, onDragEnd, shouldStart } = this.props;
@@ -87,15 +84,11 @@ class MouseSelection extends Component<Props, State> {
 
       return {
         x: pageX - containerBoundingRect.left + container.scrollLeft,
-        y:
-          pageY -
-          containerBoundingRect.top +
-          container.scrollTop -
-          window.scrollY,
+        y: pageY - containerBoundingRect.top + container.scrollTop - window.scrollY,
       };
     };
 
-    container.addEventListener("mousemove", (event: MouseEvent) => {
+    container.addEventListener('mousemove', (event: MouseEvent) => {
       const { start, locked } = this.state;
 
       if (!start || locked) {
@@ -108,7 +101,7 @@ class MouseSelection extends Component<Props, State> {
       });
     });
 
-    container.addEventListener("mousedown", (event: MouseEvent) => {
+    container.addEventListener('mousedown', (event: MouseEvent) => {
       if (!shouldStart(event)) {
         this.reset();
         return;
@@ -129,10 +122,7 @@ class MouseSelection extends Component<Props, State> {
 
       const onMouseUp = (event: MouseEvent): void => {
         // emulate listen once
-        event.currentTarget?.removeEventListener(
-          "mouseup",
-          onMouseUp as EventListener
-        );
+        event.currentTarget?.removeEventListener('mouseup', onMouseUp as EventListener);
 
         const { start } = this.state;
 
@@ -144,11 +134,7 @@ class MouseSelection extends Component<Props, State> {
 
         const boundingRect = that.getBoundingRect(start, end);
 
-        if (
-          !isHTMLElement(event.target) ||
-          !container.contains(asElement(event.target)) ||
-          !that.shouldRender(boundingRect)
-        ) {
+        if (!isHTMLElement(event.target) || !container.contains(asElement(event.target)) || !that.shouldRender(boundingRect)) {
           that.reset();
           return;
         }
@@ -170,13 +156,13 @@ class MouseSelection extends Component<Props, State> {
 
               onDragEnd();
             }
-          }
+          },
         );
       };
 
       const { ownerDocument: doc } = container;
       if (doc.body) {
-        doc.body.addEventListener("mouseup", onMouseUp);
+        doc.body.addEventListener('mouseup', onMouseUp);
       }
     });
   }
@@ -190,20 +176,14 @@ class MouseSelection extends Component<Props, State> {
 
     return (
       <div
-        className="MouseSelection-container"
+        className='MouseSelection-container'
         ref={(node) => {
           if (!node) {
             return;
           }
           this.root = node;
-        }}
-      >
-        {start && end ? (
-          <div
-            className="MouseSelection"
-            style={this.getBoundingRect(start, end)}
-          />
-        ) : null}
+        }}>
+        {start && end ? <div className='MouseSelection' style={this.getBoundingRect(start, end)} /> : null}
       </div>
     );
   }
