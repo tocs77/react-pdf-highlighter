@@ -1,13 +1,6 @@
-import React from "react";
-import { viewportToScaled } from "../lib/coordinates";
-import type {
-  IHighlight,
-  LTWH,
-  LTWHP,
-  Position,
-  Scaled,
-  ScaledPosition,
-} from "../types";
+import { viewportToScaled } from '../lib/coordinates';
+import React from 'react';
+import { IHighlight, LTWH, LTWHP, Position, Scaled, ScaledPosition } from '../types';
 
 import type { PDFViewer } from "pdfjs-dist/web/pdf_viewer.mjs";
 import type { T_ViewportHighlight } from "./PdfHighlighter";
@@ -80,14 +73,11 @@ export function HighlightLayer<T_HT extends IHighlight>({
           },
           hideTipAndSelection,
           (rect) => {
-            const viewport = viewer.getPageView(
-              (rect.pageNumber || Number.parseInt(pageNumber)) - 1,
-            ).viewport;
+            const viewport = viewer.getPageView((rect.pageNumber || parseInt(pageNumber)) - 1).viewport;
 
             return viewportToScaled(rect, viewport);
           },
-          (boundingRect) =>
-            screenshot(boundingRect, Number.parseInt(pageNumber)),
+          (boundingRect) => screenshot(boundingRect, parseInt(pageNumber)),
           isScrolledTo,
         );
       })}

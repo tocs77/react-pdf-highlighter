@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
 interface Props {
   onMoveAway: () => void;
@@ -23,10 +23,8 @@ class MouseMonitor extends Component<Props> {
     // TODO: see if possible to optimize
     const { left, top, width, height } = this.container.getBoundingClientRect();
 
-    const inBoundsX =
-      clientX > left - paddingX && clientX < left + width + paddingX;
-    const inBoundsY =
-      clientY > top - paddingY && clientY < top + height + paddingY;
+    const inBoundsX = clientX > left - paddingX && clientX < left + width + paddingX;
+    const inBoundsY = clientY > top - paddingY && clientY < top + height + paddingY;
 
     const isNear = inBoundsX && inBoundsY;
 
@@ -41,21 +39,18 @@ class MouseMonitor extends Component<Props> {
 
     if (ref) {
       const { ownerDocument: doc } = ref;
-      doc.addEventListener("mousemove", this.onMouseMove);
+      doc.addEventListener('mousemove', this.onMouseMove);
       this.unsubscribe = () => {
-        doc.removeEventListener("mousemove", this.onMouseMove);
+        doc.removeEventListener('mousemove', this.onMouseMove);
       };
     }
   };
 
   render() {
     // eslint-disable-next-line
-    const { onMoveAway, paddingX, paddingY, children, ...restProps } =
-      this.props;
+    const { onMoveAway, paddingX, paddingY, children, ...restProps } = this.props;
 
-    return (
-      <div ref={this.attachRef}>{React.cloneElement(children, restProps)}</div>
-    );
+    return <div ref={this.attachRef}>{React.cloneElement(children, restProps)}</div>;
   }
 }
 

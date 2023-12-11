@@ -1,24 +1,15 @@
-import type { Page } from "../types";
+import { Page } from '../types';
 
-export const getDocument = (element: Element): Document =>
-  element.ownerDocument || document;
+export const getDocument = (elm: any): Document => (elm || {}).ownerDocument || document;
+export const getWindow = (elm: any): typeof window => (getDocument(elm) || {}).defaultView || window;
+export const isHTMLElement = (elm: any) => elm instanceof HTMLElement || elm instanceof getWindow(elm).HTMLElement;
+export const isHTMLCanvasElement = (elm: any) =>
+  elm instanceof HTMLCanvasElement || elm instanceof getWindow(elm).HTMLCanvasElement;
 
-export const getWindow = (element: Element): typeof window =>
-  getDocument(element).defaultView || window;
-
-export const isHTMLElement = (
-  element: Element | null,
-): element is HTMLElement =>
-  element != null &&
-  (element instanceof HTMLElement ||
-    element instanceof getWindow(element).HTMLElement);
-
-export const isHTMLCanvasElement = (element: Element) =>
-  element instanceof HTMLCanvasElement ||
-  element instanceof getWindow(element).HTMLCanvasElement;
+export const asElement = (x: any): HTMLElement => x;
 
 export const getPageFromElement = (target: HTMLElement): Page | null => {
-  const node = target.closest(".page");
+  const node = asElement(target.closest('.page'));
 
   if (!isHTMLElement(node)) {
     return null;
@@ -59,11 +50,7 @@ export const getPagesFromRange = (range: Range): Page[] => {
   const document = startPage.node.ownerDocument;
 
   while (currentPageNumber <= endPage.number) {
-    const currentPage = getPageFromElement(
-      document.querySelector(
-        `[data-page-number='${currentPageNumber}'`,
-      ) as HTMLElement,
-    );
+    const currentPage = getPageFromElement(document.querySelector(`[data-page-number='${currentPageNumber}'`) as HTMLElement);
     if (currentPage) {
       pages.push(currentPage);
     }
@@ -73,15 +60,12 @@ export const getPagesFromRange = (range: Range): Page[] => {
   return pages;
 };
 
-export const findOrCreateContainerLayer = (
-  container: HTMLElement,
-  className: string,
-) => {
+export const findOrCreateContainerLayer = (container: HTMLElement, className: string) => {
   const doc = getDocument(container);
   let layer = container.querySelector(`.${className}`);
 
   if (!layer) {
-    layer = doc.createElement("div");
+    layer = doc.createElement('div');
     layer.className = className;
     container.appendChild(layer);
   }

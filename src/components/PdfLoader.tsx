@@ -1,7 +1,13 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { GlobalWorkerOptions, getDocument } from "pdfjs-dist";
-import type { PDFDocumentProxy } from "pdfjs-dist";
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pdfjsWorker: any;
+(async () => {
+  pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
+})();
 
 interface Props {
   /** See `GlobalWorkerOptionsType`. */
@@ -28,7 +34,7 @@ export class PdfLoader extends Component<Props, State> {
   };
 
   static defaultProps = {
-    workerSrc: "https://unpkg.com/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs",
+    workerSrc: pdfjsWorker,
   };
 
   documentRef = React.createRef<HTMLElement>();
@@ -55,6 +61,7 @@ export class PdfLoader extends Component<Props, State> {
 
     if (onError) {
       onError(error);
+      console.log('errr', info);
     }
 
     this.setState({ pdfDocument: null, error });
@@ -66,7 +73,7 @@ export class PdfLoader extends Component<Props, State> {
     const { pdfDocument: discardedDocument } = this.state;
     this.setState({ pdfDocument: null, error: null });
 
-    if (typeof workerSrc === "string") {
+    if (typeof workerSrc === 'string') {
       GlobalWorkerOptions.workerSrc = workerSrc;
     }
 
@@ -97,11 +104,7 @@ export class PdfLoader extends Component<Props, State> {
     return (
       <>
         <span ref={this.documentRef} />
-        {error
-          ? this.renderError()
-          : !pdfDocument || !children
-            ? beforeLoad
-            : children(pdfDocument)}
+        {error ? this.renderError() : !pdfDocument || !children ? beforeLoad : children(pdfDocument)}
       </>
     );
   }

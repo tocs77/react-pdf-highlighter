@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import "../style/Tip.css";
+import '../style/Tip.css';
 
 interface State {
   compact: boolean;
@@ -17,8 +17,8 @@ interface Props {
 export class Tip extends Component<Props, State> {
   state: State = {
     compact: true,
-    text: "",
-    emoji: "",
+    text: '',
+    emoji: '',
   };
 
   // for TipContainer
@@ -35,34 +35,29 @@ export class Tip extends Component<Props, State> {
     const { compact, text, emoji } = this.state;
 
     return (
-      <div className="Tip">
+      <div className='Tip'>
         {compact ? (
           <div
-            className="Tip__compact"
+            className='Tip__compact'
             onClick={() => {
               onOpen();
               this.setState({ compact: false });
-            }}
-          >
+            }}>
             Add highlight
           </div>
         ) : (
           <form
-            className="Tip__card"
+            className='Tip__card'
             onSubmit={(event) => {
               event.preventDefault();
               onConfirm({ text, emoji });
-            }}
-          >
+            }}>
             <div>
               <textarea
-                placeholder="Your comment"
-                // biome-ignore lint/a11y/noAutofocus: This is an example app
+                placeholder='Your comment'
                 autoFocus
                 value={text}
-                onChange={(event) =>
-                  this.setState({ text: event.target.value })
-                }
+                onChange={(event) => this.setState({ text: event.target.value })}
                 ref={(node) => {
                   if (node) {
                     node.focus();
@@ -70,16 +65,14 @@ export class Tip extends Component<Props, State> {
                 }}
               />
               <div>
-                {["💩", "😱", "😍", "🔥", "😳", "⚠️"].map((_emoji) => (
+                {['💩', '😱', '😍', '🔥', '😳', '⚠️'].map((_emoji) => (
                   <label key={_emoji}>
                     <input
                       checked={emoji === _emoji}
-                      type="radio"
-                      name="emoji"
+                      type='radio'
+                      name='emoji'
                       value={_emoji}
-                      onChange={(event) =>
-                        this.setState({ emoji: event.target.value })
-                      }
+                      onChange={(event) => this.setState({ emoji: event.target.value })}
                     />
                     {_emoji}
                   </label>
@@ -87,7 +80,7 @@ export class Tip extends Component<Props, State> {
               </div>
             </div>
             <div>
-              <input type="submit" value="Save" />
+              <input type='submit' value='Save' />
             </div>
           </form>
         )}
