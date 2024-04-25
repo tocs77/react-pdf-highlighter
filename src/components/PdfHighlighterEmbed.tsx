@@ -6,7 +6,6 @@ import PdfLoader from "./PdfLoader";
 import { PdfHighlighter } from "./PdfHighlighter";
 import { AreaHighlight } from "./AreaHighlight";
 import { Highlight } from "./Highlight";
-import Tip from "./Tip";
 import Popup from "./Popup";
 
 interface PdfHighlighterEmbedProps<T_HT> {
@@ -49,16 +48,18 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
               content,
               hideTipAndSelection,
               transformSelection
-            ) => (
-              <Tip
-                onOpen={transformSelection}
-                onConfirm={(comment) => {
-                  addHighlight({ content, position, comment });
-
-                  hideTipAndSelection();
-                }}
-              />
-            )}
+            ) => {
+              addHighlight({
+                content,
+                position,
+                color: "orange",
+                comment: "New highlight",
+                created: new Date().toLocaleDateString(),
+                author: "Иванов И.И.",
+              });
+              hideTipAndSelection();
+              return null;
+            }}
             highlightTransform={(
               highlight,
               index,
@@ -108,11 +109,17 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
 
 const HighlightPopup = ({
   comment,
+  created,
+  author,
 }: {
-  comment: { text: string; emoji: string };
+  comment: string;
+  created: string;
+  author: string;
 }) =>
-  comment.text ? (
+  comment ? (
     <div className="Highlight__popup">
-      {comment.emoji} {comment.text}
+      <div>{comment}</div>
+      <div>{author}</div>
+      <div>{created}</div>
     </div>
   ) : null;

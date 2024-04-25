@@ -26,10 +26,10 @@ export const testHighlights = {
         pageNumber: 1,
       },
       color: "green",
-      comment: {
-        text: "Flow or TypeScript?",
-        emoji: "🔥",
-      },
+      comment: "Flow or TypeScript?",
+      created: "25.04.2024",
+      author: "Иванов И.И",
+
       id: "8245652131754351",
     },
     {
@@ -58,10 +58,9 @@ export const testHighlights = {
         pageNumber: 1,
       },
       color: "green",
-      comment: {
-        text: "impressive",
-        emoji: "",
-      },
+      comment: "impressive",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "812807243318874",
     },
     {
@@ -101,10 +100,9 @@ export const testHighlights = {
         pageNumber: 1,
       },
       color: "green",
-      comment: {
-        text: "immersive coding experience!",
-        emoji: "",
-      },
+      comment: "immersive coding experience!",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "2599712881412761",
     },
     {
@@ -126,10 +124,9 @@ export const testHighlights = {
         pageNumber: 3,
       },
       color: "green",
-      comment: {
-        text: "lisp!",
-        emoji: "😱",
-      },
+      comment: "lisp!",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "9120567402727258",
     },
     {
@@ -169,10 +166,9 @@ export const testHighlights = {
         pageNumber: 4,
       },
       color: "green",
-      comment: {
-        text: "",
-        emoji: "",
-      },
+      comment: "",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "32839601376722394",
     },
     {
@@ -194,16 +190,17 @@ export const testHighlights = {
         pageNumber: 24,
       },
       color: "green",
-      comment: {
-        text: "",
-        emoji: "",
-      },
+      comment: "",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "46570518065661615",
     },
     {
       id: "46570518065661616",
       color: "green",
-      comment: { text: "Fast type checking?!?!", emoji: "😱" },
+      comment: "Fast type checking?!?!",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       content: {
         text: "Fast type checking.The key toFlow’s speed is modularity: the ability to break the analysis intofile-sized chunks that can be assembled later. Fortunately, JavaScript is already written using files4Avik Chaudhuri, Panagiotis Vekris, Sam Goldman, Marshall Roch, and Gabriel Levias modules, so we modularize our analysis simply by asking that modules have explicitly typedsignatures. (We still infer types for the vast majority of code “local” to modules.) Coincidentally,developers consider this good software engineering practice anyway.",
       },
@@ -315,10 +312,9 @@ export const testHighlights = {
         pageNumber: 1,
       },
       color: "green",
-      comment: {
-        text: "Static Single Assignment",
-        emoji: "😎",
-      },
+      comment: "Static Single Assignment",
+      created: "25.04.2024",
+      author: "Иванов И.И",
       id: "29668244118038056",
     },
   ],
