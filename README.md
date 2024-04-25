@@ -1,70 +1,80 @@
-☕️ [Buy me a coffee](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SC4D2NS8G2JJ8&source=url)
+# PdfHighlighterEmbed Component
 
-![Node CI](https://github.com/agentcooper/react-pdf-highlighter/workflows/Node%20CI/badge.svg)
+This component is used to embed a PDF highlighter into a React application. It allows users to highlight and comment on text or areas within a PDF document.
 
-## react-pdf-highlighter
+## Props
 
-`react-pdf-highlighter` is a [React](https://reactjs.org/) library that provides annotation experience for PDF documents on web. It is built on top of PDF.js by Mozilla. Text and rectangular highlights are supported. Highlight
-data format is independent of the viewport, making it suitable for saving on the
-server.
+- `className`: Optional CSS class name to apply to the component.
+- `style`: Optional inline styles to apply to the component.
+- `highlights`: An array of existing highlights to display on the PDF.
+- `url`: The URL of the PDF document to load.
+- `beforeLoad`: Optional content to display while the PDF is loading.
+- `onScrollChange`: A callback function to be called when the scroll position changes.
+- `addHighlight`: A function to add a new highlight to the PDF.
+- `scrollRef`: A mutable ref object to store the scroll function.
 
-### Example
+## Usage
 
-For online example check https://agentcooper.github.io/react-pdf-highlighter/.
+```jsx
+import { PdfHighlighterEmbed } from "./PdfHighlighterEmbed";
 
-To run the example app locally:
+// Define your highlights
+const highlights = [
+  {
+    content: {
+      text: "This is a highlighted text",
+      image: null,
+    },
+    position: {
+      x1: 100,
+      y1: 200,
+      x2: 300,
+      y2: 400,
+    },
+    color: "orange",
+    comment: "New highlight",
+    created: new Date().toLocaleDateString(),
+    author: "Иванов И.И.",
+  },
+  // Add more highlights as needed
+];
 
+// Define your scroll function
+const scrollRef = React.useRef(null);
+
+// Define your addHighlight function
+const addHighlight = (highlight) => {
+  // Handle adding the highlight to your state or data store
+};
+
+// Render the component
+<PdfHighlighterEmbed
+  className="pdf-highlighter"
+  style={{ width: "100%", height: "500px" }}
+  highlights={highlights}
+  url="path/to/your/pdf.pdf"
+  onScrollChange={() => console.log("Scroll changed")}
+  addHighlight={addHighlight}
+  scrollRef={scrollRef}
+/>;
 ```
-npm install
-npm start
-```
 
-Create React App example is available in [`./create-react-app-example`](https://github.com/agentcooper/react-pdf-highlighter/tree/main/create-react-app-example). Make sure to run `npm install` there as well.
+## Dependencies
 
-### Installation
+This component depends on the following components:
 
-`npm install react-pdf-highlighter`
+- `PdfLoader`: A component to load and display a PDF document.
+- `PdfHighlighter`: A component to highlight areas within a PDF document.
+- `AreaHighlight`: A component to display an area highlight.
+- `Highlight`: A component to display a text highlight.
+- `Popup`: A component to display a popup with additional information.
 
-See
-[`./example/src/App.tsx`](https://github.com/agentcooper/react-pdf-highlighter/blob/main/example/src/App.tsx)
-for React component API example.
+## HighlightPopup Component
 
-### Prior art
+This is a sub-component used to display a popup with highlight information. It takes the following props:
 
-[`react-pdf`](https://github.com/wojtekmaj/react-pdf) and
-[`react-pdfjs`](https://github.com/erikras/react-pdfjs) only provide React
-wrappers for PDF.js and do not have built-in annotation functionality.
+- `comment`: The comment associated with the highlight.
+- `created`: The date when the highlight was created.
+- `author`: The author of the highlight.
 
-[`pdfjs-annotate`](https://github.com/instructure/pdf-annotate.js/) does not
-provide text highlights out of the box.
-
-PDF.js provides only viewer:
-
-> [PDF.js is mainly written for reading PDF files, not editing them. Because of that we don't yet support adding any kind of annotations. We do however support rendering a number of annotation types for viewing.](https://github.com/mozilla/pdf.js/wiki/Frequently-Asked-Questions#is-it-possible-to-add-annotations-to-a-pdf)
-
-See also:
-
-- https://github.com/mozilla/pdf.js
-- https://github.com/wojtekmaj/react-pdf
-- https://github.com/erikras/react-pdfjs
-- https://github.com/instructure/pdf-annotate.js/
-- https://blogs.dropbox.com/tech/2016/11/annotations-on-document-previews/
-
-### FAQ
-
-##### Can I get a new PDF with the highlights embedded into the document?
-
-Take a look at https://pdf-lib.js.org.
-
-##### Wasn't this named react-pdf-annotator at some point?
-
-Yes, but people from https://www.pdfannotator.com/ asked me to rename, since [they have a trademark for PDF Annotator](https://www.pdfannotator.com/en/help/infodisclaimer).
-
-##### I'm trying the demo with my PDF and it is not loading!
-
-Please check the [CORS headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) on your url. It is required for the cross-domain request.
-
-### Compatibility
-
-Works in Google Chrome, Safari 10+, Firefox 52+. Not tested in Internet
-Explorer.
+The popup will only be displayed if the `comment` prop is provided.
