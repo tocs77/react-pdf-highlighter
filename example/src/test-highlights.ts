@@ -25,6 +25,7 @@ export const testHighlights = {
         ],
         pageNumber: 1,
       },
+      color: "green",
       comment: {
         text: "Flow or TypeScript?",
         emoji: "🔥",
@@ -56,6 +57,7 @@ export const testHighlights = {
         ],
         pageNumber: 1,
       },
+      color: "green",
       comment: {
         text: "impressive",
         emoji: "",
@@ -98,6 +100,7 @@ export const testHighlights = {
         ],
         pageNumber: 1,
       },
+      color: "green",
       comment: {
         text: "immersive coding experience!",
         emoji: "",
@@ -122,6 +125,7 @@ export const testHighlights = {
         rects: [],
         pageNumber: 3,
       },
+      color: "green",
       comment: {
         text: "lisp!",
         emoji: "😱",
@@ -164,6 +168,7 @@ export const testHighlights = {
         ],
         pageNumber: 4,
       },
+      color: "green",
       comment: {
         text: "",
         emoji: "",
@@ -188,6 +193,7 @@ export const testHighlights = {
         rects: [],
         pageNumber: 24,
       },
+      color: "green",
       comment: {
         text: "",
         emoji: "",
@@ -196,6 +202,7 @@ export const testHighlights = {
     },
     {
       id: "46570518065661616",
+      color: "green",
       comment: { text: "Fast type checking?!?!", emoji: "😱" },
       content: {
         text: "Fast type checking.The key toFlow’s speed is modularity: the ability to break the analysis intofile-sized chunks that can be assembled later. Fortunately, JavaScript is already written using files4Avik Chaudhuri, Panagiotis Vekris, Sam Goldman, Marshall Roch, and Gabriel Levias modules, so we modularize our analysis simply by asking that modules have explicitly typedsignatures. (We still infer types for the vast majority of code “local” to modules.) Coincidentally,developers consider this good software engineering practice anyway.",
@@ -307,6 +314,7 @@ export const testHighlights = {
         ],
         pageNumber: 1,
       },
+      color: "green",
       comment: {
         text: "Static Single Assignment",
         emoji: "😎",

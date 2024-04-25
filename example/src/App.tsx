@@ -45,6 +45,8 @@ const HighlightPopup = ({
   ) : null;
 
 const PRIMARY_PDF_URL = "https://arxiv.org/pdf/1708.08021.pdf";
+// const PRIMARY_PDF_URL =
+// "https://www.rlocman.ru/i/File/2023/03/09/ASMT-Jx3x.pdf";
 const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 
 const searchParams = new URLSearchParams(document.location.search);
@@ -194,6 +196,7 @@ class App extends Component<{}, State> {
                       isScrolledTo={isScrolledTo}
                       position={highlight.position}
                       comment={highlight.comment}
+                      color={highlight.color}
                     />
                   ) : (
                     <AreaHighlight

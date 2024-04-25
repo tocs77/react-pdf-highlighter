@@ -1,15 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { Rnd } from 'react-rnd';
-import { getPageFromElement } from '../lib/pdfjs-dom';
+import { Rnd } from "react-rnd";
+import { getPageFromElement } from "../lib/pdfjs-dom";
 
-import '../style/AreaHighlight.css';
+import "../style/AreaHighlight.css";
 
-import type { LTWHP, ViewportHighlight } from '../types';
+import type { LTWHP, ViewportHighlight } from "../types";
 
 interface Props {
   highlight: ViewportHighlight;
-  onChange: (rect: LTWHP) => void;
+  onChange?: (rect: LTWHP) => void;
   isScrolledTo: boolean;
 }
 
@@ -18,9 +18,17 @@ export class AreaHighlight extends Component<Props> {
     const { highlight, onChange, isScrolledTo, ...otherProps } = this.props;
 
     return (
-      <div className={`AreaHighlight ${isScrolledTo ? 'AreaHighlight--scrolledTo' : ''}`}>
+      <div
+        className={`AreaHighlight ${
+          isScrolledTo ? "AreaHighlight--scrolledTo" : ""
+        }`}
+        style={{ backgroundColor: "green" }}
+      >
         <Rnd
-          className='AreaHighlight__part'
+          className="AreaHighlight__part"
+          style={{ backgroundColor: highlight.color || "#ffe28f" }}
+          disableDragging
+          enableResizing={false}
           onDragStop={(_, data) => {
             const boundingRect: LTWHP = {
               ...highlight.position.boundingRect,
@@ -28,7 +36,7 @@ export class AreaHighlight extends Component<Props> {
               left: data.x,
             };
 
-            onChange(boundingRect);
+            onChange?.(boundingRect);
           }}
           onResizeStop={(_mouseEvent, _direction, ref, _delta, position) => {
             const boundingRect: LTWHP = {
@@ -39,7 +47,7 @@ export class AreaHighlight extends Component<Props> {
               pageNumber: getPageFromElement(ref)?.number || -1,
             };
 
-            onChange(boundingRect);
+            onChange?.(boundingRect);
           }}
           position={{
             x: highlight.position.boundingRect.left,
