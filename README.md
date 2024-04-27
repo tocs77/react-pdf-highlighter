@@ -1,80 +1,58 @@
 # PdfHighlighterEmbed Component
 
-This component is used to embed a PDF highlighter into a React application. It allows users to highlight and comment on text or areas within a PDF document.
+This component is used to embed a PDF highlighter into a React application. It allows users to highlight text and areas in a PDF document, and also provides a way to add new highlights and handle scroll changes.
 
 ## Props
 
-- `className`: Optional CSS class name to apply to the component.
-- `style`: Optional inline styles to apply to the component.
-- `highlights`: An array of existing highlights to display on the PDF.
+- `readonly`: A boolean indicating whether the highlighter is in read-only mode.
+- `onClickHighlight`: A function that is called when a highlight is clicked.
+- `className`: A CSS class name to apply to the component.
+- `style`: Inline styles to apply to the component.
+- `highlights`: An array of existing highlights to display.
 - `url`: The URL of the PDF document to load.
-- `beforeLoad`: Optional content to display while the PDF is loading.
-- `onScrollChange`: A callback function to be called when the scroll position changes.
-- `addHighlight`: A function to add a new highlight to the PDF.
-- `scrollRef`: A mutable ref object to store the scroll function.
+- `beforeLoad`: A JSX element to display while the PDF is loading.
+- `onScrollChange`: A function that is called when the scroll position changes.
+- `addHighlight`: A function that adds a new highlight.
+- `scrollRef`: A mutable ref object that is used to scroll to a specific highlight.
 
 ## Usage
 
 ```jsx
-import { PdfHighlighterEmbed } from "./PdfHighlighterEmbed";
+import { PdfHighlighterEmbed } from "@tdms/pdf-highlight-embed";
 
-// Define your highlights
-const highlights = [
-  {
-    content: {
-      text: "This is a highlighted text",
-      image: null,
-    },
-    position: {
-      x1: 100,
-      y1: 200,
-      x2: 300,
-      y2: 400,
-    },
-    color: "orange",
-    comment: "New highlight",
-    created: new Date().toLocaleDateString(),
-    author: "Иванов И.И.",
-  },
-  // Add more highlights as needed
-];
+// ...
 
-// Define your scroll function
-const scrollRef = React.useRef(null);
-
-// Define your addHighlight function
-const addHighlight = (highlight) => {
-  // Handle adding the highlight to your state or data store
-};
-
-// Render the component
 <PdfHighlighterEmbed
-  className="pdf-highlighter"
-  style={{ width: "100%", height: "500px" }}
-  highlights={highlights}
   url="path/to/your/pdf.pdf"
-  onScrollChange={() => console.log("Scroll changed")}
-  addHighlight={addHighlight}
+  highlights={highlights}
+  onClickHighlight={handleClickHighlight}
+  addHighlight={handleAddHighlight}
   scrollRef={scrollRef}
+  onScrollChange={handleScrollChange}
+  readonly={false}
 />;
 ```
 
 ## Dependencies
 
-This component depends on the following components:
+This component depends on the following components and types:
 
-- `PdfLoader`: A component to load and display a PDF document.
-- `PdfHighlighter`: A component to highlight areas within a PDF document.
-- `AreaHighlight`: A component to display an area highlight.
-- `Highlight`: A component to display a text highlight.
-- `Popup`: A component to display a popup with additional information.
+- `PdfLoader`
+- `PdfHighlighter`
+- `AreaHighlight`
+- `Highlight`
+- `Popup`
+- `IHighlight`
+- `NewHighlight`
+- `ViewportHighlight`
 
-## HighlightPopup Component
+Make sure to import these dependencies in your file.
 
-This is a sub-component used to display a popup with highlight information. It takes the following props:
+## Notes
 
-- `comment`: The comment associated with the highlight.
-- `created`: The date when the highlight was created.
-- `author`: The author of the highlight.
-
-The popup will only be displayed if the `comment` prop is provided.
+- The `HighlightPopup` component is used to display additional information when a highlight is hovered over.
+- The `PdfHighlighterEmbed` component uses the `PdfLoader` to load the PDF document and then renders the `PdfHighlighter` component with the loaded document.
+- The `PdfHighlighter` component handles the actual highlighting and selection of text and areas.
+- The `onSelectionFinished` prop of the `PdfHighlighter` component is used to add a new highlight when the user finishes selecting text or an area.
+- The `highlightTransform` prop of the `PdfHighlighter` component is used to transform the highlights into components that can be displayed in the UI.
+- The `scrollRef` prop is used to provide a way for the parent component to scroll to a specific highlight.
