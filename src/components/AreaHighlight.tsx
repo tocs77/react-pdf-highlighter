@@ -11,11 +11,13 @@ interface Props {
   highlight: ViewportHighlight;
   onChange?: (rect: LTWHP) => void;
   isScrolledTo: boolean;
+  onClick?: () => void;
 }
 
 export class AreaHighlight extends Component<Props> {
   render() {
-    const { highlight, onChange, isScrolledTo, ...otherProps } = this.props;
+    const { highlight, onChange, isScrolledTo, onClick, ...otherProps } =
+      this.props;
 
     return (
       <div
@@ -60,6 +62,7 @@ export class AreaHighlight extends Component<Props> {
           onClick={(event: Event) => {
             event.stopPropagation();
             event.preventDefault();
+            if (onClick) onClick();
           }}
           {...otherProps}
         />

@@ -1,6 +1,6 @@
 import React, { MutableRefObject } from "react";
 
-import type { IHighlight, NewHighlight } from "../types";
+import type { IHighlight, NewHighlight, ViewportHighlight } from "../types";
 import PdfLoader from "./PdfLoader";
 
 import { PdfHighlighter } from "./PdfHighlighter";
@@ -9,6 +9,8 @@ import { Highlight } from "./Highlight";
 import Popup from "./Popup";
 
 interface PdfHighlighterEmbedProps<T_HT> {
+  readonly?: boolean;
+  onClickHighlight: (highlight: ViewportHighlight) => void;
   className?: string;
   style?: React.CSSProperties;
   highlights: Array<IHighlight>;
@@ -31,6 +33,8 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
     addHighlight,
     scrollRef,
     style,
+    readonly = false,
+    onClickHighlight,
   } = props;
   return (
     <div className={className} style={style}>
@@ -39,6 +43,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
           <PdfHighlighter
             pdfDocument={pdfDocument}
             enableAreaSelection={(event) => event.altKey}
+            readonly={readonly}
             onScrollChange={onScrollChange}
             scrollRef={(scrollTo) => {
               scrollRef.current = scrollTo;
@@ -54,7 +59,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
                 position,
                 color: "orange",
                 comment: "New highlight",
-                created: new Date().toLocaleDateString(),
+                created: new Date().toISOString(),
                 author: "Иванов И.И.",
               });
               hideTipAndSelection();
@@ -79,11 +84,13 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
                   position={highlight.position}
                   comment={highlight.comment}
                   color={highlight.color}
+                  onClick={() => onClickHighlight(highlight)}
                 />
               ) : (
                 <AreaHighlight
                   isScrolledTo={isScrolledTo}
                   highlight={highlight}
+                  onClick={() => onClickHighlight(highlight)}
                 />
               );
 

@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { PdfHighlighterEmbed } from "./react-pdf-highlighter";
 
-import type { IHighlight, NewHighlight } from "./react-pdf-highlighter";
+import type {
+  IHighlight,
+  NewHighlight,
+  ViewportHighlight,
+} from "./react-pdf-highlighter";
 
 import { testHighlights as _testHighlights } from "./test-highlights";
 import { Spinner } from "./Spinner";
@@ -93,6 +97,10 @@ const App = () => {
     });
   };
 
+  const clickHighlightHandler = (highlight: ViewportHighlight) => {
+    console.log("clickHighlightHandler", highlight);
+  };
+
   const { url, highlights } = state;
 
   return (
@@ -103,7 +111,9 @@ const App = () => {
         toggleDocument={toggleDocument}
       />
       <PdfHighlighterEmbed
+        onClickHighlight={clickHighlightHandler}
         addHighlight={addHighlight}
+        readonly={false}
         style={{
           height: "100vh",
           width: "75vw",

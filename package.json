@@ -1,8 +1,8 @@
 {
-  "name": "pdf-highlight-embed",
-  "version": "0.0.1",
+  "name": "@tdms/pdf-highlight-embed",
+  "version": "0.0.2",
   "description": "Set of React components for PDF annotation",
-  "license": "MIT",
+  "license": "CSoft",
   "keywords": [
     "pdf",
     "highlight",
