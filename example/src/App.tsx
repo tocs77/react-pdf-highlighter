@@ -46,6 +46,7 @@ const App = () => {
       ? [...testHighlights[initialUrl]]
       : [],
   });
+  const [height, setHeight] = useState("200px");
 
   const scrollViewerTo = useRef<(highlight: any) => void>(
     (highlight: any) => {}
@@ -80,6 +81,10 @@ const App = () => {
     window.addEventListener("hashchange", scrollToHighlightFromHash, false);
   }, []);
 
+  const toggleHeight = () => {
+    setHeight(height === "200px" ? "400px" : "200px");
+  };
+
   const getHighlightById = (id: string) => {
     const { highlights } = state;
 
@@ -110,21 +115,27 @@ const App = () => {
         resetHighlights={resetHighlights}
         toggleDocument={toggleDocument}
       />
-      <PdfHighlighterEmbed
-        onClickHighlight={clickHighlightHandler}
-        addHighlight={addHighlight}
-        readonly={false}
-        style={{
-          height: "100vh",
-          width: "75vw",
-          position: "relative",
-        }}
-        scrollRef={scrollViewerTo}
-        highlights={highlights}
-        url={url}
-        beforeLoad={<Spinner />}
-        onScrollChange={resetHash}
-      />
+      <div className="container">
+        <div
+          style={{ backgroundColor: "olive", height: height }}
+          onClick={toggleHeight}
+        />
+        <PdfHighlighterEmbed
+          onClickHighlight={clickHighlightHandler}
+          addHighlight={addHighlight}
+          readonly={false}
+          style={{
+            height: "100vh",
+            width: "75vw",
+            position: "relative",
+          }}
+          scrollRef={scrollViewerTo}
+          highlights={highlights}
+          url={url}
+          beforeLoad={<Spinner />}
+          onScrollChange={resetHash}
+        />
+      </div>
     </div>
   );
 };
