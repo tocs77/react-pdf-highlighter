@@ -544,6 +544,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   handleScaleValue = () => {
+    console.log("handle scale", this.props.pdfScaleValue);
     if (this.viewer) {
       this.viewer.currentScaleValue = this.props.pdfScaleValue; //"page-width";
     }

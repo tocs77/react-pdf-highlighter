@@ -1,4 +1,4 @@
-import React, { MutableRefObject } from "react";
+import React, { MutableRefObject, useEffect, useMemo, useState } from "react";
 
 import type { IHighlight, NewHighlight, ViewportHighlight } from "../types";
 import PdfLoader from "./PdfLoader";
@@ -8,10 +8,21 @@ import { AreaHighlight } from "./AreaHighlight";
 import { Highlight } from "./Highlight";
 import Popup from "./Popup";
 
+let workerLoaded = false;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let pdfjsWorker: any;
+// (async () => {
+//   pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
+//   console.log("loaded worker");
+//   workerLoaded = true;
+// })();
+
 interface PdfHighlighterEmbedProps<T_HT> {
   readonly?: boolean;
   onClickHighlight: (highlight: ViewportHighlight) => void;
   className?: string;
+  pdfScaleValue?: number;
   style?: React.CSSProperties;
   highlights: Array<IHighlight>;
   url: string;
@@ -27,6 +38,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
   const {
     className,
     url,
+    pdfScaleValue,
     highlights,
     beforeLoad,
     onScrollChange,
@@ -36,11 +48,33 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
     readonly = false,
     onClickHighlight,
   } = props;
-  return (
-    <div className={className} style={style}>
-      <PdfLoader url={url} beforeLoad={beforeLoad || <div>Загрузка...</div>}>
+
+  const [workerImported, setWorkerImported] = useState(false);
+
+  const importWorker = async () => {
+    pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
+    if (pdfjsWorker) {
+      setWorkerImported(true);
+    }
+  };
+
+  useEffect(() => {
+    if (!workerImported || !pdfjsWorker) {
+      importWorker();
+    }
+  }, [workerLoaded]);
+
+  const loader = useMemo(() => {
+    if (!workerImported) return <div>Подготовка</div>;
+    return (
+      <PdfLoader
+        url={url}
+        beforeLoad={beforeLoad || <div>Загрузка...</div>}
+        workerSrc={pdfjsWorker}
+      >
         {(pdfDocument) => (
           <PdfHighlighter
+            pdfScaleValue={pdfScaleValue ? String(pdfScaleValue / 100) : ""}
             pdfDocument={pdfDocument}
             enableAreaSelection={(event) => event.altKey}
             readonly={readonly}
@@ -110,6 +144,12 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
           />
         )}
       </PdfLoader>
+    );
+  }, [addHighlight, highlights, pdfScaleValue, url, workerImported]);
+
+  return (
+    <div className={className} style={style}>
+      {loader}
     </div>
   );
 };

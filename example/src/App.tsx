@@ -16,11 +16,6 @@ import "./style/App.css";
 
 const testHighlights: Record<string, Array<IHighlight>> = _testHighlights;
 
-interface State {
-  url: string;
-  highlights: Array<IHighlight>;
-}
-
 const getNextId = () => String(Math.random()).slice(2);
 
 const parseIdFromHash = () =>
@@ -38,35 +33,30 @@ const SECONDARY_PDF_URL = "https://arxiv.org/pdf/1604.02480.pdf";
 const searchParams = new URLSearchParams(document.location.search);
 
 const initialUrl = searchParams.get("url") || PRIMARY_PDF_URL;
+const initialHighlights = testHighlights[initialUrl]
+  ? [...testHighlights[initialUrl]]
+  : [];
 
 const App = () => {
-  const [state, setState] = useState<State>({
-    url: initialUrl,
-    highlights: testHighlights[initialUrl]
-      ? [...testHighlights[initialUrl]]
-      : [],
-  });
-  const [height, setHeight] = useState("200px");
+  const [url, setUrl] = useState(initialUrl);
+  const [highlights, setHighlights] = useState(initialHighlights);
+  const highlightsRef = useRef(initialHighlights);
+  const [scale, setScale] = useState(100);
 
   const scrollViewerTo = useRef<(highlight: any) => void>(
     (highlight: any) => {}
   );
 
   const resetHighlights = () => {
-    setState({
-      url: state.url,
-      highlights: [],
-    });
+    setHighlights([]);
   };
 
   const toggleDocument = () => {
     const newUrl =
-      state.url === PRIMARY_PDF_URL ? SECONDARY_PDF_URL : PRIMARY_PDF_URL;
+      url === PRIMARY_PDF_URL ? SECONDARY_PDF_URL : PRIMARY_PDF_URL;
 
-    setState({
-      url: newUrl,
-      highlights: testHighlights[newUrl] ? [...testHighlights[newUrl]] : [],
-    });
+    setUrl(newUrl);
+    setHighlights(testHighlights[newUrl] ? [...testHighlights[newUrl]] : []);
   };
 
   const scrollToHighlightFromHash = () => {
@@ -81,32 +71,28 @@ const App = () => {
     window.addEventListener("hashchange", scrollToHighlightFromHash, false);
   }, []);
 
-  const toggleHeight = () => {
-    setHeight(height === "200px" ? "400px" : "200px");
-  };
-
   const getHighlightById = (id: string) => {
-    const { highlights } = state;
-
     return highlights.find((highlight) => highlight.id === id);
   };
 
   const addHighlight = (highlight: NewHighlight) => {
-    const { highlights } = state;
-
-    console.log("Saving highlight", highlight);
-
-    setState({
-      url: state.url,
-      highlights: [{ ...highlight, id: getNextId() }, ...highlights],
-    });
+    const newHighlights = [
+      { ...highlight, id: getNextId() },
+      ...highlightsRef.current,
+    ];
+    highlightsRef.current = newHighlights;
+    setHighlights(newHighlights);
   };
 
   const clickHighlightHandler = (highlight: ViewportHighlight) => {
     console.log("clickHighlightHandler", highlight);
   };
 
-  const { url, highlights } = state;
+  const updateScale = (val: number) => {
+    const newScale = scale + val;
+    if (newScale < 20 || newScale > 500) return;
+    setScale(newScale);
+  };
 
   return (
     <div className="App" style={{ display: "flex", height: "100vh" }}>
@@ -116,11 +102,13 @@ const App = () => {
         toggleDocument={toggleDocument}
       />
       <div className="container">
-        <div
-          style={{ backgroundColor: "olive", height: height }}
-          onClick={toggleHeight}
-        />
+        <div style={{ width: "300px" }}>
+          <button onClick={() => updateScale(10)}>+</button>
+          <button onClick={() => updateScale(-10)}>-</button>
+        </div>
+
         <PdfHighlighterEmbed
+          pdfScaleValue={scale}
           onClickHighlight={clickHighlightHandler}
           addHighlight={addHighlight}
           readonly={false}

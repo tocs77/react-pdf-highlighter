@@ -1,13 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist/legacy/build/pdf';
-import type { PDFDocumentProxy } from 'pdfjs-dist';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let pdfjsWorker: any;
-(async () => {
-  pdfjsWorker = await import('pdfjs-dist/build/pdf.worker.entry');
-})();
+import { getDocument, GlobalWorkerOptions } from "pdfjs-dist/legacy/build/pdf";
+import type { PDFDocumentProxy } from "pdfjs-dist";
 
 interface Props {
   /** See `GlobalWorkerOptionsType`. */
@@ -33,9 +27,9 @@ export class PdfLoader extends Component<Props, State> {
     error: null,
   };
 
-  static defaultProps = {
-    workerSrc: pdfjsWorker,
-  };
+  // static defaultProps = {
+  //   workerSrc: pdfjsWorker,
+  // };
 
   documentRef = React.createRef<HTMLElement>();
 
@@ -60,8 +54,7 @@ export class PdfLoader extends Component<Props, State> {
     const { onError } = this.props;
 
     if (onError) {
-      onError(error);
-      console.log('errr', info);
+      console.log("errr", info);
     }
 
     this.setState({ pdfDocument: null, error });
@@ -73,7 +66,7 @@ export class PdfLoader extends Component<Props, State> {
     const { pdfDocument: discardedDocument } = this.state;
     this.setState({ pdfDocument: null, error: null });
 
-    if (typeof workerSrc === 'string') {
+    if (typeof workerSrc === "string") {
       GlobalWorkerOptions.workerSrc = workerSrc;
     }
 
@@ -93,7 +86,9 @@ export class PdfLoader extends Component<Props, State> {
           this.setState({ pdfDocument });
         });
       })
-      .catch((e) => this.componentDidCatch(e));
+      .catch((e) => {
+        return this.componentDidCatch(e);
+      });
   }
 
   render() {
@@ -102,7 +97,11 @@ export class PdfLoader extends Component<Props, State> {
     return (
       <>
         <span ref={this.documentRef} />
-        {error ? this.renderError() : !pdfDocument || !children ? beforeLoad : children(pdfDocument)}
+        {error
+          ? this.renderError()
+          : !pdfDocument || !children
+          ? beforeLoad
+          : children(pdfDocument)}
       </>
     );
   }
