@@ -52,7 +52,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
   const [workerImported, setWorkerImported] = useState(false);
 
   const importWorker = async () => {
-    pdfjsWorker = await import("pdfjs-dist/build/pdf.worker.entry");
+    pdfjsWorker = await import("../lib/pdf.worker.entry");
     if (pdfjsWorker) {
       setWorkerImported(true);
     }

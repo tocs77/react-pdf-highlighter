@@ -6,10 +6,9 @@ import "../style/PdfHighlighter.css";
 
 import {
   EventBus,
-  NullL10n,
   PDFLinkService,
   PDFViewer,
-} from "pdfjs-dist/legacy/web/pdf_viewer";
+} from "pdfjs-dist/legacy/web/pdf_viewer.mjs";
 import type {
   IHighlight,
   LTWH,
@@ -124,7 +123,9 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   constructor(props: Props<T_HT>) {
     super(props);
     if (typeof ResizeObserver !== "undefined") {
-      this.resizeObserver = new ResizeObserver(this.debouncedScaleValue);
+      this.resizeObserver = new ResizeObserver(() =>
+        this.debouncedScaleValue()
+      );
     }
     this.containerNodeRef = React.createRef();
   }
@@ -137,7 +138,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     const { eventBus, resizeObserver: observer } = this;
     const ref = (this.containerNode = this.containerNodeRef!.current);
     this.unsubscribe();
-
     if (ref) {
       const { ownerDocument: doc } = ref;
       eventBus.on("textlayerrendered", this.onTextLayerRendered);
@@ -145,6 +145,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
       doc.addEventListener("selectionchange", this.onSelectionChange);
       doc.addEventListener("keydown", this.handleKeyDown);
       doc.defaultView?.addEventListener("resize", this.debouncedScaleValue);
+
       if (observer) observer.observe(ref);
 
       this.unsubscribe = () => {
@@ -185,7 +186,7 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
 
         removePageBorders: true,
         linkService: this.linkService,
-        l10n: NullL10n,
+        // l10n: NullL10n,
       });
 
     this.linkService.setDocument(pdfDocument);
@@ -544,7 +545,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   }
 
   handleScaleValue = () => {
-    console.log("handle scale", this.props.pdfScaleValue);
     if (this.viewer) {
       this.viewer.currentScaleValue = this.props.pdfScaleValue; //"page-width";
     }
@@ -553,8 +553,8 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   debouncedScaleValue: () => void = debounce(this.handleScaleValue, 500);
 
   render() {
+    this.handleScaleValue();
     const { onSelectionFinished, enableAreaSelection } = this.props;
-
     return (
       <div onPointerDown={this.onMouseDown}>
         <div
@@ -611,7 +611,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
                     { image },
                     () => this.hideTipAndSelection(),
                     () => {
-                      console.log("setting ghost highlight", scaledPosition);
                       this.setState(
                         {
                           ghostHighlight: {
