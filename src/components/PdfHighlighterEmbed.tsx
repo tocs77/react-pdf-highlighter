@@ -30,6 +30,7 @@ interface PdfHighlighterEmbedProps<T_HT> {
   onScrollChange: () => void;
   addHighlight: (highlight: NewHighlight) => void;
   scrollRef: MutableRefObject<(highlight: T_HT) => void>;
+  enableAreaSelection: (e: MouseEvent) => boolean;
 }
 
 export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
@@ -47,6 +48,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
     style,
     readonly = false,
     onClickHighlight,
+    enableAreaSelection,
   } = props;
 
   const [workerImported, setWorkerImported] = useState(false);
@@ -76,7 +78,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
           <PdfHighlighter
             pdfScaleValue={pdfScaleValue ? String(pdfScaleValue / 100) : ""}
             pdfDocument={pdfDocument}
-            enableAreaSelection={(event) => event.altKey}
+            enableAreaSelection={enableAreaSelection}
             readonly={readonly}
             onScrollChange={onScrollChange}
             scrollRef={(scrollTo) => {

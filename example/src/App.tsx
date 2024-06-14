@@ -108,6 +108,7 @@ const App = () => {
         </div>
 
         <PdfHighlighterEmbed
+          enableAreaSelection={(e) => e.altKey}
           pdfScaleValue={scale}
           onClickHighlight={clickHighlightHandler}
           addHighlight={addHighlight}
