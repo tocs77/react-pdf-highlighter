@@ -14,6 +14,8 @@ This component is used to embed a PDF highlighter into a React application. It a
 - `onScrollChange`: A function that is called when the scroll position changes.
 - `addHighlight`: A function that adds a new highlight.
 - `scrollRef`: A mutable ref object that is used to scroll to a specific highlight.
+- `scaleRef`: A mutable ref object that is used to scale pdf.
+
 - `enableAreaSelection`: Function to check if area selection anbled
 
 ## Usage
@@ -26,6 +28,8 @@ import { PdfHighlighterEmbed } from "@tdms/pdf-highlight-embed";
 <PdfHighlighterEmbed
   url="path/to/your/pdf.pdf"
   highlights={highlights}
+  scaleRef={scaleRef}
+  defaultScale={100}
   onClickHighlight={handleClickHighlight}
   addHighlight={handleAddHighlight}
   scrollRef={scrollRef}
