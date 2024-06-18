@@ -72,8 +72,10 @@ interface Props<T_HT> {
   highlights: Array<T_HT>;
   onScrollChange: () => void;
   scrollRef: (scrollTo: (highlight: T_HT) => void) => void;
+
   pdfDocument: PDFDocumentProxy;
-  pdfScaleValue: string;
+  scaleRef: (scale: (scale: number) => void) => void;
+  pdfScaleValue: number;
   onSelectionFinished: (
     position: ScaledPosition,
     content: { text?: string; image?: string },
@@ -374,6 +376,10 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     this.renderHighlightLayers();
   };
 
+  scale = (scale: number) => {
+    this.handleScaleValue(scale);
+  };
+
   scrollTo = (highlight: T_HT) => {
     const { pageNumber, boundingRect, usePdfCoordinates } = highlight.position;
 
@@ -411,11 +417,12 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
   };
 
   onDocumentReady = () => {
-    const { scrollRef } = this.props;
+    const { scrollRef, scaleRef } = this.props;
 
     this.handleScaleValue();
 
     scrollRef(this.scrollTo);
+    scaleRef(this.scale);
   };
 
   onSelectionChange = () => {
@@ -543,10 +550,9 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<
     );
   }
 
-  handleScaleValue = () => {
-    console.log("handle scale", this.props.pdfScaleValue);
+  handleScaleValue = (value: number = this.props.pdfScaleValue) => {
     if (this.viewer) {
-      this.viewer.currentScaleValue = this.props.pdfScaleValue; //"page-width";
+      this.viewer.currentScaleValue = String(value / 100); //"page-width";
     }
   };
 

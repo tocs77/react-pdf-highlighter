@@ -22,15 +22,17 @@ interface PdfHighlighterEmbedProps<T_HT> {
   readonly?: boolean;
   onClickHighlight: (highlight: ViewportHighlight) => void;
   className?: string;
-  pdfScaleValue?: number;
+  scaleRef: MutableRefObject<(scale: number) => void>;
   style?: React.CSSProperties;
   highlights: Array<IHighlight>;
   url: string;
+  defaultScale?: number;
   beforeLoad?: JSX.Element;
   onScrollChange: () => void;
   addHighlight: (highlight: NewHighlight) => void;
   scrollRef: MutableRefObject<(highlight: T_HT) => void>;
   enableAreaSelection: (e: MouseEvent) => boolean;
+  scrolledStyle?: React.CSSProperties;
 }
 
 export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
@@ -39,7 +41,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
   const {
     className,
     url,
-    pdfScaleValue,
+    scaleRef,
     highlights,
     beforeLoad,
     onScrollChange,
@@ -49,6 +51,8 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
     readonly = false,
     onClickHighlight,
     enableAreaSelection,
+    defaultScale,
+    scrolledStyle,
   } = props;
 
   const [workerImported, setWorkerImported] = useState(false);
@@ -76,7 +80,10 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
       >
         {(pdfDocument) => (
           <PdfHighlighter
-            pdfScaleValue={pdfScaleValue ? String(pdfScaleValue / 100) : ""}
+            scaleRef={(scale) => {
+              scaleRef.current = scale;
+            }}
+            pdfScaleValue={defaultScale || 100}
             pdfDocument={pdfDocument}
             enableAreaSelection={enableAreaSelection}
             readonly={readonly}
@@ -121,12 +128,14 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
                   comment={highlight.comment}
                   color={highlight.color}
                   onClick={() => onClickHighlight(highlight)}
+                  scrolledStyle={scrolledStyle}
                 />
               ) : (
                 <AreaHighlight
                   isScrolledTo={isScrolledTo}
                   highlight={highlight}
                   onClick={() => onClickHighlight(highlight)}
+                  scrolledStyle={scrolledStyle}
                 />
               );
 
@@ -147,7 +156,7 @@ export const PdfHighlighterEmbed = <T_HT extends IHighlight>(
         )}
       </PdfLoader>
     );
-  }, [addHighlight, highlights, pdfScaleValue, url, workerImported]);
+  }, [addHighlight, highlights, url, workerImported, enableAreaSelection]);
 
   return (
     <div className={className} style={style}>

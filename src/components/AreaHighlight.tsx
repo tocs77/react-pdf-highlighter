@@ -12,23 +12,34 @@ interface Props {
   onChange?: (rect: LTWHP) => void;
   isScrolledTo: boolean;
   onClick?: () => void;
+  scrolledStyle?: React.CSSProperties;
 }
 
 export class AreaHighlight extends Component<Props> {
   render() {
-    const { highlight, onChange, isScrolledTo, onClick, ...otherProps } =
-      this.props;
+    const {
+      highlight,
+      onChange,
+      isScrolledTo,
+      scrolledStyle,
+      onClick,
+      ...otherProps
+    } = this.props;
+
+    const scrollStyles = isScrolledTo ? scrolledStyle : {};
 
     return (
       <div
         className={`AreaHighlight ${
           isScrolledTo ? "AreaHighlight--scrolledTo" : ""
         }`}
-        style={{ backgroundColor: "green" }}
       >
         <Rnd
           className="AreaHighlight__part"
-          style={{ backgroundColor: highlight.color || "#ffe28f" }}
+          style={{
+            backgroundColor: highlight.color || "#ffe28f",
+            ...scrollStyles,
+          }}
           disableDragging
           enableResizing={false}
           onDragStop={(_, data) => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { PdfHighlighterEmbed } from "./react-pdf-highlighter";
 
@@ -47,6 +47,8 @@ const App = () => {
     (highlight: any) => {}
   );
 
+  const updatePdfScale = useRef<(scale: number) => void>((scale) => {});
+
   const resetHighlights = () => {
     setHighlights([]);
   };
@@ -84,14 +86,17 @@ const App = () => {
     setHighlights(newHighlights);
   };
 
-  const clickHighlightHandler = (highlight: ViewportHighlight) => {
+  const clickHighlightHandler = useCallback((highlight: ViewportHighlight) => {
     console.log("clickHighlightHandler", highlight);
-  };
+  }, []);
+
+  const areaSelectHandler = useCallback((e: MouseEvent) => e.altKey, []);
 
   const updateScale = (val: number) => {
     const newScale = scale + val;
     if (newScale < 20 || newScale > 500) return;
     setScale(newScale);
+    updatePdfScale.current?.(newScale);
   };
 
   return (
@@ -108,8 +113,10 @@ const App = () => {
         </div>
 
         <PdfHighlighterEmbed
-          enableAreaSelection={(e) => e.altKey}
-          pdfScaleValue={scale}
+          defaultScale={scale}
+          scrolledStyle={{ outline: "6px solid pink" }}
+          enableAreaSelection={areaSelectHandler}
+          scaleRef={updatePdfScale}
           onClickHighlight={clickHighlightHandler}
           addHighlight={addHighlight}
           readonly={false}

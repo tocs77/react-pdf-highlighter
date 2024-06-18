@@ -15,6 +15,7 @@ interface Props {
   comment: string;
   isScrolledTo: boolean;
   color?: string;
+  scrolledStyle?: React.CSSProperties;
 }
 
 export class Highlight extends Component<Props> {
@@ -25,10 +26,12 @@ export class Highlight extends Component<Props> {
       onMouseOver,
       onMouseOut,
       isScrolledTo,
+      scrolledStyle,
       color = "#ffe28f",
     } = this.props;
 
     const { rects } = position;
+    const scrollStyles = isScrolledTo ? scrolledStyle : {};
 
     return (
       <div
@@ -41,7 +44,11 @@ export class Highlight extends Component<Props> {
               onMouseOut={onMouseOut}
               onClick={onClick}
               key={index}
-              style={{ ...rect, backgroundColor: color }}
+              style={{
+                ...rect,
+                backgroundColor: color,
+                ...scrollStyles,
+              }}
               className={"Highlight__part"}
             />
           ))}
