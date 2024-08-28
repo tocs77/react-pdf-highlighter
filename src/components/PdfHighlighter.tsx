@@ -53,7 +53,6 @@ interface Props<T_HT> {
     viewportToScaled: (rect: LTWHP) => Scaled,
     screenshot: (position: LTWH) => string,
     isScrolledTo: boolean,
-
   ) => JSX.Element;
   highlights: Array<T_HT>;
   onScrollChange: () => void;
@@ -415,10 +414,6 @@ export class PdfHighlighter<T_HT extends IHighlight> extends PureComponent<Props
         scrolledToHighlightId: EMPTY_ID,
       },
       () => this.renderHighlightLayers(),
-<<<<<<< HEAD
-      () => this.renderHighlightLayers(),
-=======
->>>>>>> d6873e8e9107ad21230d5b89359d5941e27a7071
     );
 
     this.viewer.container.removeEventListener('scroll', this.onScroll);
