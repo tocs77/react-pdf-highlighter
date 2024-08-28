@@ -2,8 +2,10 @@ import { viewportToScaled } from '../lib/coordinates';
 import React from 'react';
 import { IHighlight, LTWH, LTWHP, Position, Scaled, ScaledPosition } from '../types';
 
+
 import type { PDFViewer } from "pdfjs-dist/web/pdf_viewer.mjs";
 import type { T_ViewportHighlight } from "./PdfHighlighter";
+
 
 interface HighlightLayerProps<T_HT> {
   highlightsByPage: { [pageNumber: string]: Array<T_HT> };
